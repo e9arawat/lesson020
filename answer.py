@@ -193,31 +193,27 @@ def generate_random_data(n):
     current_year = datetime.now().year
     start_year = current_year - n - 1
     date_list = []
-    for i in range(100):
-        date_list.append(
-            str(random.randint(start_year, current_year))
-            + "-"
-            + str(random.randint(1, 12))
-            + "-"
-            + str(random.randint(1, 28))
-        )
+    date_list = [
+        str(random.randint(start_year, current_year - 1))
+        + "-"
+        + str(random.randint(1, 12))
+        + "-"
+        + str(random.randint(1, 28))
+        for i in range(100)
+    ]
 
     date_list = sorted(date_list)
     character_list = list(string.ascii_lowercase)
-    category_list, description_list, debit_list, credit_list, mode_of_payment_list = (
-        [],
-        [],
-        [],
-        [],
-        [],
-    )
+    category_list = ["".join(random.choices(character_list, k=10)) for i in range(100)]
+    description_list = [
+        "".join(random.choices(character_list, k=15)) for i in range(100)
+    ]
+    mode_of_payment_list = [
+        "".join(random.choices(character_list, k=7)) for i in range(100)
+    ]
+    print(category_list)
+    debit_list, credit_list = [], []
     for i in range(100):
-        temp = random.choices(character_list, k=10)
-        temp = "".join(temp)
-        category_list.append(temp)
-        temp = random.choices(character_list, k=15)
-        temp = "".join(temp)
-        description_list.append(temp)
         debit_or_credit = random.randint(0, 2)
         if debit_or_credit:
             debit_list.append(0)
@@ -225,11 +221,6 @@ def generate_random_data(n):
         else:
             debit_list.append(random.randint(500, 100000))
             credit_list.append(0)
-        temp = random.choices(character_list, k=7)
-        temp = "".join(temp)
-        mode_of_payment_list.append(temp)
-
-    for i in range(100):
         ledger(
             date_list[i],
             category_list[i],
@@ -242,7 +233,7 @@ def generate_random_data(n):
 
 if __name__ == "__main__":
     generate_random_data(10)
-    generate_category_report("ledger.csv")
-    generate_txt("ledger.csv")
-    generate_payment_report("ledger.csv")
-    transaction('2023-12-3', 1200, 'Food', 'punjab', 'card', True)
+    # generate_category_report("ledger.csv")
+    # generate_txt("ledger.csv")
+    # generate_payment_report("ledger.csv")
+    # transaction('2023-12-3', 1200, 'Food', 'punjab', 'card', True)
