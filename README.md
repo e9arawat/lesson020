@@ -35,7 +35,7 @@ def debit(amount):
 Write a function `transaction(amount, category, desc, mode_of_payment, credit=False)` to make a transaction.
 
 ```python
-def transaction(amount, category, desc, mode_of_payment, credit=False):
+def transaction(date, amount, category, description, mode_of_payment, credit=True, debit=True)::
     return balance
 ```
 
@@ -44,7 +44,7 @@ def transaction(amount, category, desc, mode_of_payment, credit=False):
 Write a function `ledger(date, amount, category, desc, mode_of_payment)` to store all information regarding your account transaction and store in csv file.
 
 ```python
-def ledger(date, amount, category, desc, mode_of_payment):
+def ledger(date, category, description, debit, credit, mode_of_payment)::
     return
 ```
 
