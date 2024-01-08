@@ -185,7 +185,10 @@ def generate_txt(filename):
         report_reader = csv.reader(f1)
         report_writer = csv.writer(f2)
         for x in report_reader:
-            report_writer.writerow(x)
+            temp = []
+            for i in x:
+                temp.append(f"{i:12}") 
+            report_writer.writerow(temp)
 
 
 def generate_random_data(n):
@@ -234,6 +237,6 @@ def generate_random_data(n):
 if __name__ == "__main__":
     generate_random_data(10)
     # generate_category_report("ledger.csv")
-    # generate_txt("ledger.csv")
+    generate_txt("ledger.csv")
     # generate_payment_report("ledger.csv")
     # transaction('2023-12-3', 1200, 'Food', 'punjab', 'card', True)
