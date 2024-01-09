@@ -3,42 +3,47 @@ import csv
 import random
 from datetime import datetime
 import string
-
+import os
 
 def ledger(date, category, description, debit, credit, mode_of_payment):
-    """function to add data to the ledger file"""
-    with open("ledger.csv", "r", encoding="utf8") as f:
-        csv_reader = csv.DictReader(f)
-        data = list(csv_reader)
-        if f.tell() == 0:
-            current_balance = 0
+        """function to add data to the ledger file"""
+        if not os.path.exists('ledger.csv'):
+            with open('ledger.csv','w', encoding='utf8') as f:
+                csv_writer = csv.writer(f)
+                csv_writer.writerow(['Date', 'Category', 'Description', 'Debit', 'Credit', 'Balance', 'Mode of Payment'])
+                current_balance = 0
         else:
-            latest_data = data[-1]
-            current_balance = latest_data["Balance"]
-    if debit:
-        current_balance = int(current_balance) - debit
-    if credit:
-        current_balance = int(current_balance) + credit
+            with open("ledger.csv", "r", encoding="utf8") as f:
+                csv_reader = csv.DictReader(f)
+                data = list(csv_reader)
+                if f.tell() == 0:
+                    current_balance = 0
+                else:
+                    latest_data = data[-1]
+                    current_balance = latest_data["Balance"]
+        if debit:
+            current_balance = int(current_balance) - debit
+        if credit:
+            current_balance = int(current_balance) + credit
 
-    data = {
-        "Date": date,
-        "Category": category,
-        "Description": description,
-        "Debit": debit,
-        "Credit": credit,
-        "Balance": current_balance,
-        "Mode of Payment": mode_of_payment,
-    }
-    headers = list(data.keys())
+        data = {
+            "Date": date,
+            "Category": category,
+            "Description": description,
+            "Debit": debit,
+            "Credit": credit,
+            "Balance": current_balance,
+            "Mode of Payment": mode_of_payment,
+        }
+        headers = list(data.keys())
 
-    with open("ledger.csv", "a", encoding="utf8", newline="\n") as f:
-        csv_writer = csv.DictWriter(f, fieldnames=headers)
-        if f.tell() == 0:
-            csv_writer.writeheader()
-        csv_writer.writerow(data)
-    return current_balance
-
-
+        with open("ledger.csv", "a", encoding="utf8", newline="\n") as f:
+            csv_writer = csv.DictWriter(f, fieldnames=headers)
+            if f.tell() == 0:
+                csv_writer.writeheader()
+            csv_writer.writerow(data)
+        return current_balance
+    
 def credit(date, amount, category, description, mode_of_payment):
     """function to add data of credited amount"""
     return ledger(date, category, description, 0, amount, mode_of_payment)
@@ -183,13 +188,16 @@ def generate_txt(filename):
         "report.txt", "w", encoding="utf8"
     ) as f2:
         report_reader = csv.reader(f1)
-        report_writer = csv.writer(f2)
         for x in report_reader:
-            temp = []
-            for i in x:
-                temp.append(f"{i:12}") 
-            report_writer.writerow(temp)
-
+            temp = ""
+            print(x)
+            for index, i in enumerate(x):
+                if index in range(1,14):
+                    temp += (f"{i:10}") 
+                else:
+                    temp += (f"{i:14}") 
+            temp += '\n'
+            f2.write(temp)
 
 def generate_random_data(n):
     """function to generate random data"""
@@ -236,7 +244,7 @@ def generate_random_data(n):
 
 if __name__ == "__main__":
     generate_random_data(10)
-    # generate_category_report("ledger.csv")
     generate_txt("ledger.csv")
-    # generate_payment_report("ledger.csv")
-    # transaction('2023-12-3', 1200, 'Food', 'punjab', 'card', True)
+    generate_payment_report("ledger.csv")
+    transaction('2023-12-3', 1200, 'Food', 'punjab', 'card', True)
+    debit('2023-12-3', 100, 'Food', 'punjab', 'card')
