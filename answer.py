@@ -214,16 +214,23 @@ def generate_random_data(n):
     ]
 
     date_list = sorted(date_list)
-    character_list = list(string.ascii_lowercase)
-    category_list = ["".join(random.choices(character_list, k=10)) for i in range(100)]
-    description_list = [
-        "".join(random.choices(character_list, k=15)) for i in range(100)
+    categories = ["Food", "Rent", "Arcade", "Movies", "Travel", "Petrol", "EMI"]
+    descriptions = ["Groceries", "Restaurant", "Internet", "Movie", "Flight"]
+    modes_of_payment = [
+        "Credit Card",
+        "Debit Card",
+        "Cash",
+        "G-pay",
+        "Paytm",
+        "Amazon-pay",
+        "Phone-pay",
     ]
-    mode_of_payment_list = [
-        "".join(random.choices(character_list, k=7)) for i in range(100)
-    ]
-    print(category_list)
+
+    category_list = random.choices(categories, k=100)
+    description_list = random.choices(descriptions, k=100)
+    mode_of_payment_list = random.choices(modes_of_payment, k=100)
     debit_list, credit_list = [], []
+    
     for i in range(100):
         debit_or_credit = random.randint(0, 2)
         if debit_or_credit:
